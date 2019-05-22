@@ -1,0 +1,41 @@
+@font-face {
+  font-family: 'buding';
+  src:url("../../static/fonts/buding.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'heiti';
+  src:url("../../static/fonts/heiti.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+/*移动端响应式布局*/
+html {
+  font-size: 625%; /*100 รท 16 ร— 100% = 625% 1rem=100px*/
+  background:#f4f4f4;
+  font-family: 'heiti';
+  color:#000;
+}
+/*@media screen and (min-width:320px) and (max-width:374px) and (orientation:portrait) {*/
+  /*html { font-size: 625%; }*/
+/*}*/
+/*@media screen and (min-width:375px) and (max-width:383px) and (orientation:portrait) {*/
+  /*html { font-size: 625%; }*/
+/*}*/
+/*@media screen and (min-width:384px) and (max-width:399px) and (orientation:portrait) {*/
+  /*html { font-size: 750%; }*/
+/*}*/
+/*@media screen and (min-width:400px) and (max-width:413px) and (orientation:portrait) {*/
+  /*html { font-size: 781.25%; }*/
+/*}*/
+/*@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){*/
+  /*html { font-size: 808.6%; }*/
+/*}*/
+/*@media screen and (min-width:432px) and (max-width:479px) and (orientation:portrait){*/
+  /*html { font-size: 843.75%; }*/
+/*}*/
+*{
+  margin:0;padding:0;
+}
+
