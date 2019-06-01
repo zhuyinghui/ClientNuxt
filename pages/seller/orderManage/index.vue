@@ -1,24 +1,36 @@
 <template>
-    <div>
-      <smalltitle>订单管理 / 订单处理</smalltitle>
-      <upload-img @ParentFn="test"></upload-img>
-    </div>
+  <ul>
+    <li v-for="todo in todos">
+      <input type="checkbox" :checked="todo.done" @change="toggle(todo)">
+      <span :class="{ done: todo.done }">{{ todo.text }}</span>
+    </li>
+    <li><input placeholder="What needs to be done?" @keyup.enter="addTodo"></li>
+  </ul>
 </template>
 
 <script>
-    import Smalltitle from "../../../components/seller/smalltitle";
-    import UploadImg from "../../../components/seller/uploadImg";
-    export default {
-        name: "index",
-      components: {UploadImg, Smalltitle},
-      methods:{
-          test(data){
-            console.log(data)
-          }
+  import { mapMutations } from 'vuex'
+
+  export default {
+    computed: {
+      todos () {
+        return this.$store.state.todos.list
       }
+    },
+    methods: {
+      addTodo (e) {
+        this.$store.commit('todos/add', e.target.value)
+        e.target.value = ''
+      },
+      ...mapMutations({
+        toggle: 'todos/toggle'
+      })
     }
+  }
 </script>
 
-<style scoped>
-
+<style>
+  .done {
+    text-decoration: line-through;
+  }
 </style>

@@ -1,10 +1,10 @@
 <template>
-    <div>商品管理</div>
+  <div>分类列表</div>
 </template>
 
 <script>
     export default {
-        name: "index"
+        name: "classList"
     }
 </script>
 

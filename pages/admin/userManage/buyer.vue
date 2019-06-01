@@ -1,10 +1,10 @@
 <template>
-    <div>商品分类管理</div>
+    <div>用户管理 / 买家</div>
 </template>
 
 <script>
     export default {
-        name: "index"
+      name:'buyer'
     }
 </script>
 

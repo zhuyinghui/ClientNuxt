@@ -10,7 +10,7 @@
           <div class="hline"></div>
           <div class="sline"></div>
         </div>
-        <input type="file" accept="image/*" id="file"/>
+        <input type="file" accept="image/*" id="file" multiple="multiple"/>
       </div>
     </div>
   </div>
@@ -27,27 +27,32 @@
       },
       methods:{
         uploadimg(){
-          let imagearr=[];
           document.querySelector('#file').addEventListener('change',()=>{
               let fileList= document.querySelector('#file').files;
-              for(let item of fileList){
-                if(/^image\/png$|jpeg$|jpg$/.test(item.type)){
-                  let imgsrc=URL.createObjectURL(item);
-                  imagearr.push(imgsrc);
+              for(let file of fileList){
+                if(/^image\/png$|jpeg$|jpg$/.test(file.type)){
+                    // let imgsrc=URL.createObjectURL(item);
+                    let reader=new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload=function () {
+                        callback(reader.result);
+                    };
                 }else{
                   alert('上传的图片格式不对');
                 }
               }
-              if(imagearr){
-                this.images=imagearr;
-                this.toParent();
-              }
-            if(this.images.length>=3){
-              document.querySelector('#addimg').style.display='none';
-            }
           });
+          let callback=(imgsrc)=>{
+            if(this.images.length<3){
+              this.images.push(imgsrc);
+            }
+            this.toParent();
+          };
         },
         toParent(){
+          if(this.images.length===3){
+            document.querySelector('#addimg').style.display='none';
+          }
           this.$emit("ParentFn",this.images)
         },
         deleimg(index){
