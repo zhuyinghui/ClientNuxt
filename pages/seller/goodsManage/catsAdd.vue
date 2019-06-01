@@ -117,7 +117,7 @@
           }
           if(b){
             let result=this.Cat;
-            this.$axios.post('http://zhuyinghui.shop:8081/catsInfo',result).then(res=>{
+            this.$axios.post('http://localhost:8081/catsInfo',result).then(res=>{
               console.log(res.data);
               this.$Modal.success({
                 title: '提示',

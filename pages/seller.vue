@@ -14,6 +14,10 @@
             <li>订单管理</li>
             <li><nuxt-link to="/seller/orderManage">订单处理</nuxt-link></li>
           </ul>
+          <ul>
+            <li>接口测试</li>
+            <li><nuxt-link to="/seller/test">测试</nuxt-link></li>
+          </ul>
         </div>
         <div class="content">
           <nuxt-child/>
@@ -31,21 +35,21 @@
 
         }
       },
-      watch:{
-        '$route':'watchroute'
-      },
-      methods:{
-          watchroute(){
-            if(!sessionStorage.seller){
-              //用户未登录
-              this.$Modal.error({
-                title: '错误提示',
-                content: '请先登录'
-              });
-              this.$router.push({path:'/seller'});
-            }
-          }
-      },
+      // watch:{
+      //   '$route':'watchroute'
+      // },
+      // methods:{
+      //     watchroute(){
+      //       if(!sessionStorage.seller){
+      //         //用户未登录
+      //         this.$Modal.error({
+      //           title: '错误提示',
+      //           content: '请先登录'
+      //         });
+      //         this.$router.push({path:'/seller'});
+      //       }
+      //     }
+      // },
       mounted() {
 
       }
