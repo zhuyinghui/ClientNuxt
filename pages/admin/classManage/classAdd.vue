@@ -68,6 +68,19 @@
               admin,Cats
             }).then(res=>{
               console.log(res.data);
+              this.$Modal.success({
+                title: '提示',
+                content: '宠物猫分类添加成功!'
+              });
+              this.Cats={
+                name:'',
+                  images:[],
+                  variety:'',
+                  form:'',
+                  charactor:'',
+                  nurse:'',
+                  feed:''
+              }
             }).catch(err=>{
               console.log(err)
             })

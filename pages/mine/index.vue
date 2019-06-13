@@ -2,39 +2,41 @@
   <section class="container">
     <navlists :num="4"></navlists>
     <pink-title>个人中心</pink-title>
-    <div class="top">
+
+    <div class="top" @click="tologin">
       <img src="@/static/icons/weblogo.png">
-      <span>点击登录/注册</span>
+      <span>{{username}}</span>
     </div>
+
     <div class="icons">
-      <div class="icon">
+      <nuxt-link to="/mine/mydata" class="icon">
         <img src="@/static/icons/m1.png" alt="">
-       <span>个人资料</span>
-      </div>
-      <div class="icon">
+        <span>个人资料</span>
+      </nuxt-link>
+      <nuxt-link to="/mine/myorder" class="icon">
         <img src="@/static/icons/m2.png" alt="">
         <span>我的订单</span>
-      </div>
-      <div class="icon">
+      </nuxt-link>
+      <nuxt-link to="/mine/myevalute" class="icon">
         <img src="@/static/icons/m3.png" alt="">
         <span>我的评价</span>
-      </div>
-      <div class="icon">
+      </nuxt-link>
+      <nuxt-link to="/mine/myadopt" class="icon">
         <img src="@/static/icons/m4.png" alt="">
         <span>领养管理</span>
-      </div>
-      <div class="icon">
+      </nuxt-link>
+      <nuxt-link to="/mine/buildshop" class="icon">
         <img src="@/static/icons/m5.png" alt="">
         <span>我要开店</span>
-      </div>
-      <div class="icon">
+      </nuxt-link>
+      <nuxt-link to="/mine/myadvice" class="icon">
         <img src="@/static/icons/m6.png" alt="">
         <span>意见反馈</span>
-      </div>
-      <div class="icon">
+      </nuxt-link>
+      <nuxt-link to="/login" class="icon">
         <img src="@/static/icons/m7.png" alt="">
         <span>退出登录</span>
-      </div>
+      </nuxt-link>
     </div>
   </section>
 </template>
@@ -46,6 +48,22 @@ export default {
   components: {
     PinkTitle,
     navlists
+  },
+  data(){
+    return{
+      username:'点击登录/注册'
+    }
+  },
+  methods:{
+    tologin(){
+      this.$router.push({path:'/login'});
+    }
+  },
+  mounted() {
+    if(sessionStorage.user){
+      let obj=JSON.parse(sessionStorage.user);
+      this.username=obj.username;
+    }
   }
 }
 </script>
@@ -69,7 +87,7 @@ export default {
     display: flex;justify-content: space-around;flex-wrap: wrap;
   }
   .icon{
-    width: 0.6rem;height: 0.6rem;
+    width: 1rem;height: 0.7rem;
     margin: 0.1rem;
     box-shadow: 0.01rem 0.01rem 0.02rem #d7d7d7;
     background: #fff;

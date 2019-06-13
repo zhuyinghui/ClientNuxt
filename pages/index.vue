@@ -76,8 +76,8 @@
         <span>换一批<i class="	fa fa-refresh" style="font-size: 0.12rem"></i></span>
       </div>
       <div class="goods">
-        <goods-item></goods-item>
-        <goods-item></goods-item>
+        <!--<goods-item></goods-item>-->
+        <!--<goods-item></goods-item>-->
       </div>
     </div>
     <div class="content">

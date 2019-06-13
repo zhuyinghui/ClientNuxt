@@ -2,13 +2,10 @@
   <div>
     <smalltitle>商品管理 / 宠物猫添加</smalltitle>
     <template>
-        <i-form v-model="Cat" :label-width="100">
+        <i-form v-model="Cat" :label-width="120">
           <Form-item label="宠物猫品种">
-            <i-select v-model="Cat.variety" placeholder="请选择">
-              <i-option value="1">狸花猫</i-option>
-              <i-option value="2">布偶猫</i-option>
-              <i-option value="3">缅甸猫</i-option>
-              <i-option value="4">加菲猫</i-option>
+            <i-select v-model="Cat.variety_id" placeholder="请选择">
+              <i-option v-for="(item,index) in varietylist" :value="item._id" :key="index">{{item.name}}</i-option>
             </i-select>
           </Form-item>
           <Form-item label="宠物猫名称">
@@ -65,6 +62,7 @@
       return {
         Cat: {
           name: '',
+          variety_id:'',
           variety:'',
           price:'',
           inventory:'',
@@ -75,6 +73,16 @@
           date1: '',
           date2:'',
           module:'',
+        },
+        varietylist:[],
+      }
+    },
+    watch:{
+      "Cat.variety_id":function (val) {
+        for(let item of this.varietylist){
+          if(item._id===val){
+            this.Cat.variety=item.name
+          }
         }
       }
     },
@@ -82,8 +90,9 @@
       submit(){
         let a=1;
         for(let item in this.Cat){
-          if(this.Cat[item]===''||this.Cat[item].length===0){
+          if((item!=='images'&&this.Cat[item]==='')||(item==='images'&&this.Cat[item].length===0)){
             a=0;
+            break;
           }
         }
         if(!a){
@@ -103,7 +112,7 @@
                 });
               }
             }
-            if(item==='variety'||item==='inventory'||item==='sex'||item==='module'){
+            if(item==='inventory'||item==='sex'||item==='module'){
               this.Cat[item]=Number(this.Cat[item]).toFixed(0);
             }
             if(item==='price'||item==='postage'||item==='age'){
@@ -116,8 +125,12 @@
             }
           }
           if(b){
-            let result=this.Cat;
-            this.$axios.post('http://localhost:8081/catsInfo',result).then(res=>{
+            const domain=this.$store.state.domain;
+            const seller=JSON.parse(sessionStorage.seller);
+            this.$axios.post(domain+'catsInfo',{
+              Cat:this.Cat,
+              seller
+            }).then(res=>{
               console.log(res.data);
               this.$Modal.success({
                 title: '提示',
@@ -141,11 +154,21 @@
             })
           }
         }
-
       },
       uploadcatimg(data){
         this.Cat.images=data;
+      },
+      getVariety(){
+        const domain=this.$store.state.domain;
+        this.$axios.get(domain+'catsVariety').then(res=>{
+          this.varietylist=res.data;
+        }).catch(err=>{
+          console.log(err);
+        })
       }
+    },
+    mounted() {
+      this.getVariety();
     }
   }
 </script>

@@ -22,44 +22,21 @@
         <i-col span="1" offset="1"><i class="	fa fa-angle-right"></i></i-col>
       </Row>
       <div class="orderitem">
-        <Row>
-          <div class="shopname">
-            <i-col span="24"><span>猫猫灰宠物店</span><i class="	fa fa-angle-right" style="margin-left: 0.05rem"></i></i-col>
-          </div>
-        </Row>
-        <Row type="flex" align="middle">
-          <i-col span="4"><img src="@/static/player/cat4.jpg" alt="" style="width:0.5rem; height:0.5rem;"/></i-col>
+        <Row type="flex" align="middle" v-for="item in orderlist" :key="item._id">
+          <i-col span="4"><img :src="item.images" alt="" style="width:0.5rem; height:0.5rem;"/></i-col>
           <i-col span="20">
             <Row>
-              <i-col span="24">西伯利亚森林猫十个月大打了疫苗还有几字哈哈哈哈...</i-col>
+              <i-col span="24">{{item.name}}</i-col>
             </Row>
             <Row type="flex" align="middle">
-              <i-col span="16">数量:<span>2</span></i-col>
-              <i-col span="8" style="text-align: right">￥1500.00</i-col>
+              <i-col span="16">数量:<span>{{item.count}}</span></i-col>
+              <i-col span="8" style="text-align: right">￥{{item.price}}</i-col>
             </Row>
           </i-col>
         </Row>
-        <Row type="flex" align="middle">
-          <i-col span="4"><img src="@/static/player/cat4.jpg" alt="" style="width:0.5rem; height:0.5rem;"/></i-col>
-          <i-col span="20">
-            <Row>
-              <i-col span="24">西伯利亚森林猫十个月大打了疫苗还有几字哈哈哈哈...</i-col>
-            </Row>
-            <Row type="flex" align="middle">
-              <i-col span="16">数量:<span>2</span></i-col>
-              <i-col span="8" style="text-align: right">￥1500.00</i-col>
-            </Row>
-          </i-col>
-        </Row>
-        <div class="shopacount">
-          <span>共2件商品</span>
-          <span>邮费：￥50.00</span>
-          <span>合计：<span style="font-size: 0.14rem;color: #fc455d;">￥3050.00</span></span>
-        </div>
       </div>
       <div class="orderbtm">
-        <span>共4件商品</span>
-        <span>合计：<span style="font-size: 0.14rem;color: #fc455d;">￥6100.00</span></span>
+        <span>合计：<span style="font-size: 0.18rem;color: #fc455d;font-weight: bold;">￥{{allprice}}</span></span>
         <div @click="ensurePay">确认支付</div>
       </div>
       <div class="cloth" @click="closecloth" v-if="ifcloth">
@@ -67,9 +44,9 @@
           <div class="close"><i class="	fa fa-close" id="close" @click="closecloth"></i></div>
           <span style="margin-bottom: 0.2rem;font-size: 0.14rem;">请输入支付密码</span>
           <span>支付金额</span>
-          <span style="font-size: 0.16rem;font-weight: bold;">￥6500.00</span>
+          <span style="font-size: 0.16rem;font-weight: bold;">￥{{allprice}}</span>
           <div style="margin: 0.07rem 0;">支付方式：喵呜网帐户余额</div>
-          <div><i-input size="large" placeholder="请输入密码" :value="password" type="password" id="inputp" autofocus="autofocus"></i-input></div>
+          <div><i-input size="large" placeholder="请输入密码" v-model="password" type="password" id="inputp" autofocus="autofocus"></i-input></div>
         </div>
       </div>
     </div>
@@ -84,6 +61,7 @@
           return{
             password:'',
             ifcloth:0,
+            orderlist:this.$store.state.orderlist
           }
       },
       methods:{
@@ -96,6 +74,40 @@
             }
         }
       },
+      computed:{
+        allprice(){
+          return this.$store.getters.getPostage+this.$store.getters.getPrice
+        }
+      },
+      watch:{
+         "password":function (val) {
+            if(val.length===6){
+              if(val==='000000'){
+                this.$Modal.success({
+                  title: '提示',
+                  content: '支付成功'
+                });
+                const domain=this.$store.state.domain;
+                const user=JSON.parse(sessionStorage.user);
+                const orderlist=this.$store.state.orderlist;
+                this.$axios.post(domain+'orderInfo',{
+                  user,orderlist
+                }).then(res=>{
+                  console.log(res.data);
+                  this.$router.push({path:'/'});
+                }).catch(err=>{
+                  console.log(err);
+                })
+              }else{
+                this.$Modal.error({
+                  title: '错误提示',
+                  content: '支付密码错误'
+                });
+                this.password=''
+              }
+            }
+          }
+      }
     }
 </script>
 
@@ -108,11 +120,6 @@
 }
   .orderitem{
     padding: 0.1rem 0.2rem;background: #fff;
-  }
-  .shopacount{
-    background: #fff;display: flex;justify-content: flex-end;
-    align-items: flex-end;
-    margin-top: 0.1rem;
   }
   .shopacount>span{
     margin-left: 0.1rem;

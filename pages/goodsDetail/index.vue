@@ -10,7 +10,7 @@
       </pink-title>
       <div class="navbtm">
         <div class="twoicon">
-          <div>
+          <div @click="toshop(goodsDetail.seller_id)">
             <img src="@/static/icons/toshop.png">
             <span>店铺</span>
           </div>
@@ -20,34 +20,34 @@
           </div>
         </div>
         <div class="twobtn">
-          <div>加入购物车</div>
+          <div @click="addshopcar()">加入购物车</div>
           <div>立即购买</div>
         </div>
       </div>
       <div class="goodspic">
-        <img src="@/static/player/cat3.jpg" alt=""/>
-        <div class="small">1/5</div>
+        <img :src="goodsDetail.images" alt=""/>
+        <div class="small">1/3</div>
       </div>
       <div class="goodsinfo">
-        <span>￥1500.00</span>
-        <span>西伯利亚森林猫十个月大打了疫苗还有几字哈哈哈哈...</span>
+        <span>￥{{goodsDetail.price}}</span>
+        <span>{{goodsDetail.name}}</span>
         <Row style="color:#a1a1a1">
-          <i-col span="8">库存：1</i-col>
-          <i-col span="8">销量：1</i-col>
-          <i-col span="8">邮费：￥50.00</i-col>
+          <i-col span="8">库存：{{goodsDetail.inventory}}</i-col>
+          <i-col span="8">销量：0</i-col>
+          <i-col span="8">邮费：￥{{goodsDetail.postage}}</i-col>
         </Row>
       </div>
-      <div class="tip">
-        有人发布了西伯利亚森林猫的领养信息！<span>去看看</span>
+      <div class="tip" v-if="if_cat">
+        有人发布了{{goodsDetail.variety}}的领养信息！<span>去看看</span>
       </div>
-      <ul class="tip2">
-        <li>品种：西伯利亚森林猫<span>更多了解</span></li>
-        <li>体型：大型</li>
-        <li>毛长：长毛</li>
-        <li>年龄：1.2岁</li>
-        <li>上一次疫苗时间：2018/5/18</li>
-        <li>上一次驱虫时间：2018/5/18/li>
-        <li>发货地：湖南长沙</li>
+      <ul class="tip2" v-if="if_cat">
+        <li>品种：{{goodsDetail.variety}}<span>更多了解</span></li>
+        <li>性别：<span v-if="goodsDetail.sex==='1'">公猫</span>
+          <span v-if="goodsDetail.sex==='2'">母猫</span>
+        </li>
+        <li>年龄：{{Number(goodsDetail.age/24).toFixed(1)}}岁</li>
+        <li>上一次疫苗时间：{{goodsDetail.date1}}</li>
+        <li>上一次驱虫时间：{{goodsDetail.date2}}</li>
       </ul>
       <div class="conments">
         <div class="title">用户评价</div>
@@ -70,7 +70,52 @@
     import PinkTitle from "../../components/pinkTitle";
     export default {
         name: "goodsDetail",
-      components: {PinkTitle}
+      components: {PinkTitle},
+      data(){
+          return{
+            seller_id:this.$route.query.seller_id,
+            goods_id:this.$route.query.goods_id,
+            if_cat:this.$route.query.if_cat,
+            goodsDetail:{},
+          }
+      },
+      methods:{
+        toshop(seller_id){
+          console.log(seller_id);
+        },
+        addshopcar(){
+          this.$Message.success('成功加入购物车！');
+          this.$store.commit('addshopcar',this.goodsDetail);
+          // console.log(this.$store.state.shoplist);
+        }
+      },
+      mounted() {
+          //请求指定商品数据
+           const domain=this.$store.state.domain;
+          if(this.if_cat===true){
+            this.$axios.get(domain+'catsInfo/all',{
+              params:{
+                goods_id:this.goods_id
+              }
+            }).then(res=>{
+              const arr=res.data;
+              this.goodsDetail=arr[0];
+            }).catch(err=>{
+              console.log(err);
+            });
+          }else{
+            this.$axios.get(domain+'goodsInfo/all',{
+              params:{
+                goods_id:this.goods_id
+              }
+            }).then(res=>{
+              const arr=res.data;
+              this.goodsDetail=arr[0];
+            }).catch(err=>{
+              console.log(err);
+            });
+          }
+      }
     }
 </script>
 
@@ -144,7 +189,7 @@
   .tip2{
     background: #fff;padding: 0.05rem;
   }
-  .tip2 span{
+  .tip2 li:first-child span{
     margin-left: 0.1rem;color:#fc455d;text-decoration: underline;
   }
   .conments{

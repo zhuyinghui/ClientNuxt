@@ -46,20 +46,18 @@
           this.$axios.get(domain+'adminInfo',{
             params:this.admin
           }).then(res=>{
-            if(res.data){
-              this.hintSuccess('登录成功');
-              sessionStorage.admin=JSON.stringify(res.data);
+            if(res.data.status===1){
+              this.hintSuccess(res.data.message);
+              sessionStorage.admin=JSON.stringify(res.data.account);
               this.$router.push({path:'/admin/userManage/seller'});
             }else{
-              this.hintError('密码错误，登录失败');
+              this.hintError(res.data.message);
             }
           }).catch(err=>{
             console.log(err)
           });
         }
       }
-
-
     }
 </script>
 

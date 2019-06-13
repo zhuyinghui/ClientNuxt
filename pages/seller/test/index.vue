@@ -17,12 +17,13 @@
           return{
             obj:{
               name:'zhuyinghui',age:22
-            }
+            },
+            domain:'http://zhuyinghui.shop:8081/test'
           }
       },
       methods:{
         test1(){
-          this.$axios.get('http://localhost:8081/test',{
+          this.$axios.get(this.domain,{
             params:this.obj
           }).then(res=>{
             console.log(res.data);
@@ -31,7 +32,7 @@
           })
         },
         test2(){
-          this.$axios.post('http://localhost:8081/test',{
+          this.$axios.post(this.domain,{
             user:this.obj
           }).then(res=>{
             console.log(res.data);
@@ -40,7 +41,7 @@
           })
         },
         test3(){
-          this.$axios.delete('http://localhost:8081/test',{
+          this.$axios.delete(this.domain,{
             params:this.obj
           }).then(res=>{
             console.log(res.data);
@@ -49,7 +50,7 @@
           });
         },
         test4(){
-          this.$axios.patch('http://localhost:8081/test',{
+          this.$axios.patch(this.domain,{
             user:this.obj
           }).then(res=>{
             console.log(res.data);

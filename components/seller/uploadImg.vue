@@ -10,7 +10,7 @@
           <div class="hline"></div>
           <div class="sline"></div>
         </div>
-        <input type="file" accept="image/*" id="file" multiple="multiple"/>
+        <input type="file" accept="image/*" id="file" multiple="multiple" name="file"/>
       </div>
     </div>
   </div>

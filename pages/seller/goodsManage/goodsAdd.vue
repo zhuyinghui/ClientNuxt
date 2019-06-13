@@ -2,7 +2,7 @@
     <div>
       <smalltitle>商品管理 / 商品添加</smalltitle>
       <template>
-            <i-form v-model="Goods" :label-width="100">
+            <i-form v-model="Goods" :label-width="100" >
               <Form-item label="商品类别">
                 <i-select v-model="Goods.class_num" placeholder="请选择">
                   <i-option value="1">猫粮</i-option>

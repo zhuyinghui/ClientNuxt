@@ -4,7 +4,7 @@
       <div class="login" v-show="iflogin">
           <i-form v-model="sellerLogin" :label-width="50">
             <Form-item label="账号">
-              <i-input type="text" v-model="sellerLogin.account" placeholder="手机号"></i-input>
+              <i-input type="text" v-model="sellerLogin.phone" placeholder="手机号"></i-input>
             </Form-item>
             <Form-item label="密码">
               <i-input type="password" v-model="sellerLogin.password" placeholder="密码"></i-input>
@@ -72,7 +72,7 @@
     data () {
       return {
         sellerLogin:{
-          account:'',
+          phone:'',
           password:''
         },
         sellerInfo:{
@@ -118,7 +118,7 @@
     },
     methods: {
       submit(){
-        if(this.sellerLogin.account.length<11){
+        if(this.sellerLogin.phone.length<11){
           this.hintError('登陆账号应为11位')
         }else{
           const domain=this.$store.state.domain;
@@ -126,18 +126,18 @@
             params:this.sellerLogin
           }).then(res=>{
             if(res.data.status===0){
-              this.hintError(res.data.ctn);
+              this.hintError(res.data.message);
             }else if(res.data.status===1){
-              this.hintSuccess(res.data.ctn);
+              this.hintSuccess(res.data.message);
               let seller={
-                phone:this.sellerLogin.account,
-                password:res.data.pwd
+                phone:this.sellerLogin.phone,
+                password:res.data.password
               };
               // 登录成功，保存用户账号密码
               sessionStorage.seller=JSON.stringify(seller);
               this.$router.push({path:'/seller/goodsManage/goodsList'});
             }else{
-              this.hintWarning(res.data.ctn);
+              this.hintWarning(res.data.message);
             }
           }).catch(err=>{
             console.log(err);
@@ -145,7 +145,7 @@
         }
       },
       submit2(){
-        if(this.sellerInfo.phone===''||this.sellerInfo.password===''||this.sellerInfo.shopname===''||this.password2===''||this.verification===''){
+        if(this.sellerInfo.phone===''||this.sellerInfo.password===''||this.sellerInfo.shop_name===''||this.password2===''||this.verification===''){
           this.hintError('请完善信息')
         }
         else if(this.sellerInfo.phone.length!==11){
@@ -167,10 +167,10 @@
           this.$axios.post(domain+'sellerInfo',this.sellerInfo).then(res=>{
             if(res.data.status===1){
               //注册成功
-              this.hintSuccess(res.data.ctn);
+              this.hintSuccess(res.data.message);
               this.$router.push({path:'/seller'});
             }else {
-              this.hintError(res.data.ctn)
+              this.hintError(res.data.message)
             }
           }).catch(err=>{
             console.log(err)

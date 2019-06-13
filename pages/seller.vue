@@ -35,21 +35,21 @@
 
         }
       },
-      // watch:{
-      //   '$route':'watchroute'
-      // },
-      // methods:{
-      //     watchroute(){
-      //       if(!sessionStorage.seller){
-      //         //用户未登录
-      //         this.$Modal.error({
-      //           title: '错误提示',
-      //           content: '请先登录'
-      //         });
-      //         this.$router.push({path:'/seller'});
-      //       }
-      //     }
-      // },
+      watch:{
+        '$route':'watchroute'
+      },
+      methods:{
+          watchroute(){
+            if(!sessionStorage.seller){
+              //用户未登录
+              this.$Modal.error({
+                title: '错误提示',
+                content: '请先登录'
+              });
+              this.$router.push({path:'/seller'});
+            }
+          }
+      },
       mounted() {
 
       }

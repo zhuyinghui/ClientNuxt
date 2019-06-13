@@ -41,30 +41,41 @@
       }
     },
     methods:{
-      dele(_id){
+      getData(){
         const seller=JSON.parse(sessionStorage.seller);
         const domain=this.$store.state.domain;
-        this.$axios.get(domain+'goodsInfo/delete',{
-          params:{
-            seller,
-            goods_id:_id
-          }
+        this.$axios.get(domain+'goodsInfo',{
+          params:seller
         }).then(res=>{
-          console.log(res.data);
-        }).catch(err=>{
-          console.log(err);
+          this.list=res.data;
         })
+      },
+      dele(_id){
+        this.$Modal.confirm({
+          title: '确认提示',
+          content: '确认删除此商品？',
+          onOk: () => {
+            const seller=JSON.parse(sessionStorage.seller);
+            const domain=this.$store.state.domain;
+            this.$axios.delete(domain+'goodsInfo',{
+              params:{
+                seller,
+                goods_id:_id
+              }
+            }).then(res=>{
+              console.log(res.data);
+              this.getData();
+            }).catch(err=>{
+              console.log(err);
+            })
+          },
+          onCancel: () => {
+          }
+        });
       }
     },
     mounted() {
-      const seller=JSON.parse(sessionStorage.seller);
-      const domain=this.$store.state.domain;
-      this.$axios.get(domain+'goodsInfo',{
-        params:seller
-      }).then(res=>{
-        this.list=res.data;
-        console.log(res.data)
-      })
+      this.getData();
     }
   }
 </script>

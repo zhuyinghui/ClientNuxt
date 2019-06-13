@@ -1,6 +1,6 @@
 <template>
   <div class="pinkTitle">
-    <div>
+    <div @click="backpage">
       <slot name="left"></slot>
     </div>
     <div><slot></slot></div>
@@ -12,7 +12,12 @@
 
 <script>
     export default {
-        name: "pinkTitle"
+        name: "pinkTitle",
+      methods:{
+        backpage(){
+          history.back();
+        }
+      }
     }
 </script>
 
